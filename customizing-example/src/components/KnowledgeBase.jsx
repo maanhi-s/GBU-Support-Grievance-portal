@@ -2,90 +2,85 @@ import React from 'react';
 
 export default function KnowledgeBase({ faqs, activeFaq, setActiveFaq, searchQuery, setSearchQuery, onRaiseTicketClick }) {
   return (
-    <main className="max-w-7xl mx-auto px-4 py-8 space-y-10 animate-fade-in">
+    <main className="min-h-screen bg-white">
       
-      {/* Hero Banner */}
-      <div className="bg-purple-900 text-white rounded-[2rem] p-8 md:p-14 text-center border-b-4 border-amber-400 shadow-2xl relative overflow-hidden group">
-        {/* Abstract Background Design */}
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-purple-800 to-purple-900 opacity-50 z-0"></div>
-        <div className="absolute -top-24 -right-24 w-64 h-64 bg-amber-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 group-hover:opacity-30 transition-opacity duration-700"></div>
-        
-        <div className="max-w-2xl mx-auto space-y-6 relative z-10">
-          <span className="bg-amber-400 text-purple-900 text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-md">
-            Official GBU Helpdesk
-          </span>
-          <h2 className="text-3xl md:text-5xl font-black tracking-tight leading-tight">How can we help you today?</h2>
-          <p className="text-sm md:text-base text-purple-200 font-medium">Search hostel guidelines, academic policies, fee structures, or raise a ticket.</p>
+      {/* Top Search Area (Clean Gray) */}
+      <div className="bg-slate-50 border-b border-slate-200 py-12 md:py-16">
+        <div className="max-w-7xl mx-auto px-4 space-y-6">
+          <div className="flex justify-between items-end">
+            <h2 className="text-3xl font-medium text-slate-800">Support Portal</h2>
+          </div>
           
-          <div className="relative group">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-5 text-slate-400 text-xl">🔍</span>
+          <div className="relative max-w-4xl">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-lg">🔍</span>
             <input 
               type="text" 
-              placeholder="Search e.g. Hostel repair, fee receipt, attendance rules..." 
+              placeholder="Eg: How do I apply for mess rebate, How do I report a broken AC..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full py-4 pl-12 pr-6 rounded-2xl text-slate-800 text-sm font-semibold focus:outline-none focus:ring-4 focus:ring-amber-400 shadow-2xl transition-shadow duration-300"
+              className="w-full py-4 pl-12 pr-4 bg-white border border-slate-200 rounded text-slate-800 text-base focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 shadow-sm transition-all"
             />
           </div>
         </div>
       </div>
 
-      {/* Split Grid Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {/* Content Layout */}
+      <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-12 gap-10">
         
-        {/* Sidebar Categories */}
-        <div className="space-y-4 lg:col-span-1">
-          <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest pl-2">Browse Categories</h3>
-          <div className="space-y-4">
-            {faqs.map((cat, idx) => (
-              <div key={idx} className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                <div className="p-4 bg-slate-50 font-black text-sm text-purple-900 border-b border-slate-200 flex items-center gap-3">
-                  <span className="text-xl bg-white p-2 rounded-lg shadow-sm border border-slate-100">{cat.icon}</span> {cat.category}
-                </div>
-                <div className="p-2 space-y-1">
-                  {cat.topics.map((t) => (
-                    <button
-                      key={t.id}
-                      onClick={() => setActiveFaq(t)}
-                      className={`w-full text-left p-3 rounded-xl text-sm font-bold transition-all duration-200 ${
-                        activeFaq.id === t.id ? 'bg-purple-900 text-white shadow-md translate-x-1' : 'text-slate-600 hover:bg-slate-100 hover:text-purple-900'
-                      }`}
-                    >
-                      {t.question}
-                    </button>
-                  ))}
-                </div>
+        {/* Left Sidebar (Accordions) */}
+        <div className="md:col-span-4 space-y-2">
+          {faqs.map((cat, idx) => (
+            <div key={idx} className="border border-slate-200 rounded bg-white overflow-hidden">
+              <div className="px-4 py-3 bg-white border-b border-slate-100 flex items-center gap-3 font-medium text-slate-700">
+                <span className="text-blue-500">{cat.icon}</span> {cat.category}
               </div>
-            ))}
-          </div>
+              <div className="bg-white py-2">
+                <ul className="space-y-1">
+                  {cat.topics.map((t) => (
+                    <li key={t.id}>
+                      <button
+                        onClick={() => setActiveFaq(t)}
+                        className={`w-full text-left px-5 py-2 text-sm transition-colors ${
+                          activeFaq.id === t.id ? 'text-blue-600 border-l-2 border-blue-600 bg-slate-50' : 'text-slate-600 hover:text-blue-600 hover:bg-slate-50'
+                        }`}
+                      >
+                        {t.question}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
         </div>
 
-        {/* Answer Display */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-md space-y-5 transform transition-all duration-300">
-            <span className="text-xs bg-blue-100 text-blue-800 font-black px-3 py-1 rounded-full uppercase tracking-wide border border-blue-200">
-              Verified Guide
-            </span>
-            <h3 className="text-2xl font-black text-purple-900 leading-snug">{activeFaq.question}</h3>
-            <div className="text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-5 font-medium">
+        {/* Right Content Area */}
+        <div className="md:col-span-8 space-y-8">
+          <div className="space-y-6">
+            <div className="flex items-center gap-2 text-sm text-slate-500">
+              <span>Home</span> <span className="text-slate-300">❯</span> 
+              <span>{faqs.find(c => c.topics.some(t => t.id === activeFaq.id))?.category}</span> <span className="text-slate-300">❯</span> 
+              <span className="text-slate-800">Official Guide</span>
+            </div>
+            
+            <h3 className="text-2xl font-medium text-slate-800 leading-snug">{activeFaq.question}</h3>
+            
+            <div className="text-base text-slate-600 leading-relaxed max-w-3xl">
               {activeFaq.answer}
             </div>
           </div>
 
-          {/* Call to action */}
-          <div className="bg-amber-50 border-l-8 border-amber-400 p-8 rounded-3xl flex flex-col sm:flex-row justify-between items-center gap-6 shadow-md hover:shadow-lg transition-shadow">
-            <div className="space-y-1">
-              <h4 className="font-black text-lg text-amber-900">Didn't find your answer?</h4>
-              <p className="text-sm text-amber-800 font-medium">Lodge an official ticket to route your query directly to university authorities.</p>
-            </div>
+          <div className="border-t border-slate-200 pt-8 mt-8">
+            <p className="text-slate-600 mb-4">You can track your complaints or tickets through the GBU support portal, depending on whether you have a registered account.</p>
             <button
               onClick={onRaiseTicketClick}
-              className="bg-purple-900 hover:bg-purple-800 active:scale-95 text-white font-black px-6 py-3.5 rounded-xl shadow-xl hover:shadow-purple-900/50 transition-all duration-300 shrink-0"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2.5 rounded shadow-sm transition-colors"
             >
-              Raise Support Ticket →
+              Raise a Support Ticket
             </button>
           </div>
         </div>
+
       </div>
     </main>
   );
