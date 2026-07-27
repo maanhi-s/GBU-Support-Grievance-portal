@@ -4,21 +4,32 @@ export default function KnowledgeBase({ faqs, activeFaq, setActiveFaq, searchQue
   return (
     <main className="min-h-screen bg-white">
       
-      {/* Top Search Area (Clean Gray) */}
-      <div className="bg-slate-50 border-b border-slate-200 py-12 md:py-16">
-        <div className="max-w-7xl mx-auto px-4 space-y-6">
-          <div className="flex justify-between items-end">
-            <h2 className="text-3xl font-medium text-slate-800">Support Portal</h2>
-          </div>
+      {/* 🖼️ HERO SECTION WITH CAMPUS BACKGROUND & LOGO */}
+      <div 
+        className="relative bg-slate-900 text-white border-b border-slate-200 py-16 md:py-20 bg-cover bg-center"
+        style={{ backgroundImage: "url('/gbu-campus.png')" }}
+      >
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-slate-900/85"></div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 flex flex-col items-center text-center space-y-6">
+          <img 
+            src="/gbu-logo.png" 
+            alt="GBU Logo" 
+            className="w-20 h-20 bg-white rounded-full p-1 shadow-lg"
+            onError={(e) => { e.target.style.display = 'none'; }}
+          />
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white">Gautam Buddha University Support</h2>
+          <p className="text-slate-300 max-w-2xl">Search for guidelines, policies, or raise a support ticket directly with university staff.</p>
           
-          <div className="relative max-w-4xl">
+          <div className="relative w-full max-w-2xl mt-4">
             <span className="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400 text-lg">🔍</span>
             <input 
               type="text" 
-              placeholder="Eg: How do I apply for mess rebate, How do I report a broken AC..." 
+              placeholder="Eg: How do I apply for mess rebate, report broken AC..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full py-4 pl-12 pr-4 bg-white border border-slate-200 rounded text-slate-800 text-base focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 shadow-sm transition-all"
+              className="w-full py-4 pl-12 pr-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl text-white placeholder-slate-300 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 shadow-xl transition-all"
             />
           </div>
         </div>
