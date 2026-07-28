@@ -10,7 +10,7 @@ export default function KnowledgeBase({ faqs, activeFaq, setActiveFaq, searchQue
         style={{ backgroundImage: "url('/gbu-campus.png')" }}
       >
         {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-slate-900/85"></div>
+        <div className="absolute inset-0 bg-slate-900/40"></div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 flex flex-col items-center text-center space-y-6">
           <img 

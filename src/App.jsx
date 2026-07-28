@@ -4,6 +4,7 @@ import KnowledgeBase from './components/KnowledgeBase';
 import AuthScreen from './components/AuthScreen';
 import RaiseTicketModal from './components/RaiseTicketModal';
 import AdminConsole from './components/AdminConsole';
+import Footer from './components/Footer';
 
 const INITIAL_FAQS = [
   { category: "Hostels & Mess", icon: "🏢", topics: [{ id: "h1", question: "How do I log room maintenance?", answer: "Log a ticket under 'Estate Repairs'. A technician will be assigned within 24 hours." }] },
@@ -161,6 +162,8 @@ export default function App() {
           </div>
         </div>
       )}
+      <Footer />
     </div>
+
   );
 }
