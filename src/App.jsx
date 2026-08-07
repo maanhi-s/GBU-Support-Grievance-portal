@@ -6,6 +6,7 @@ import RaiseTicketModal from './components/RaiseTicketModal';
 import AdminConsole from './components/AdminConsole';
 import Footer from './components/Footer';
 
+
 const INITIAL_FAQS = [
   { category: "Hostels & Mess", icon: "🏢", topics: [{ id: "h1", question: "How do I log room maintenance?", answer: "Log a ticket under 'Estate Repairs'. A technician will be assigned within 24 hours." }] },
   { category: "Fees & Accounts", icon: "💰", topics: [{ id: "f1", question: "How to get official fee receipts?", answer: "Request via an online ticket under 'Accounts & Fees'." }] },
@@ -73,97 +74,93 @@ export default function App() {
     setHasProofUpload(false);
   };
 
-  return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-800">
-      <Navbar currentView={currentView} setCurrentView={setCurrentView} user={currentUser} onLogout={() => { setCurrentUser(null); setCurrentView('knowledge_base'); }} />
+return (
+  <div className="overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
 
-      {currentView === 'knowledge_base' && <KnowledgeBase faqs={INITIAL_FAQS} activeFaq={activeFaq} setActiveFaq={setActiveFaq} searchQuery={searchQuery} setSearchQuery={setSearchQuery} onRaiseTicketClick={() => currentUser ? setIsModalOpen(true) : setCurrentView('auth')} />}
-      {currentView === 'auth' && <AuthScreen authData={authData} setAuthData={setAuthData} onSubmit={handleAuthSubmit} />}
+      
+      {/* 1. TOP NAVBAR */}
+      <Navbar 
+  currentView={currentView} 
+  setCurrentView={setCurrentView} 
+  currentUser={currentUser} 
+  onLogin={() => setCurrentView('auth')}
+  onLogout={() => { 
+    setCurrentUser(null); 
+    setCurrentView('knowledge_base'); 
+  }} 
+/>
 
-      {currentView === 'dashboard' && currentUser && (
-        <main className="max-w-7xl mx-auto px-4 py-12">
-          {currentUser.role === 'ADMIN' ? (
-            <AdminConsole tickets={tickets} onResolveClick={(t) => setResolvingTicket(t)} currentUser={currentUser} />
-          ) : (
-            <div className="space-y-6">
-              <div className="flex justify-between items-center bg-white p-4 rounded border border-slate-200 shadow-sm">
-                <h2 className="text-xl font-medium text-slate-800">My Tickets</h2>
-                <button onClick={() => setIsModalOpen(true)} className="bg-blue-600 text-white px-5 py-2 rounded text-sm font-medium">Raise New Ticket</button>
-              </div>
-              
-              <div className="grid md:grid-cols-2 gap-4">
-                {tickets.map(t => (
-                  <div key={t.id} className="bg-white p-5 rounded border border-slate-200 shadow-sm flex flex-col justify-between">
-                    <div>
-                      <div className="flex justify-between text-sm mb-2">
-                        <span className="font-semibold text-slate-700">{t.id}</span>
-                        <span className={`px-2 py-1 rounded text-xs font-bold ${
-                          t.status === 'Resolved' ? 'bg-emerald-100 text-emerald-700' : 
-                          t.status === 'Reopened' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'
-                        }`}>
-                          {t.status}
-                        </span>
-                      </div>
-                      <h4 className="font-medium text-slate-900 mb-1">{t.subject}</h4>
-                      <p className="text-sm text-slate-500 mb-4">{t.description}</p>
-                    </div>
-                    
-                    <div className="border-t border-slate-100 pt-3 mt-2">
-                      <div className="text-xs text-slate-400 mb-3 flex justify-between">
-                        <span>📍 {t.location}</span>
-                        <span>🕒 Logged: {t.createdAt}</span>
+      {/* 2. MAIN CONTENT AREA */}
+      <main className="flex-grow flex flex-col w-full">
+        {currentView === 'knowledge_base' && (
+          <KnowledgeBase 
+            faqs={INITIAL_FAQS} 
+            activeFaq={activeFaq} 
+            setActiveFaq={setActiveFaq} 
+            searchQuery={searchQuery} 
+            setSearchQuery={setSearchQuery} 
+            onRaiseTicketClick={() => currentUser ? setIsModalOpen(true) : setCurrentView('auth')} 
+          />
+        )}
+
+        {currentView === 'auth' && (
+          <AuthScreen authData={authData} setAuthData={setAuthData} onSubmit={handleAuthSubmit} />
+        )}
+
+        {currentView === 'dashboard' && currentUser && (
+          <div className="max-w-7xl mx-auto px-4 py-8 w-full">
+            {currentUser.role === 'ADMIN' ? (
+              <AdminConsole tickets={tickets} onResolveClick={(t) => setResolvingTicket(t)} currentUser={currentUser} />
+            ) : (
+              <div className="space-y-6">
+                <div className="flex justify-between items-center bg-white p-4 rounded border border-slate-200 shadow-sm">
+                  <h2 className="text-xl font-medium text-slate-800">My Tickets</h2>
+                  <button onClick={() => setIsModalOpen(true)} className="bg-blue-600 text-white px-5 py-2 rounded text-sm font-medium">Raise New Ticket</button>
+                </div>
+                
+                <div className="space-y-4">
+                  {tickets.map(t => (
+                    <div key={t.id} className="bg-white p-5 rounded border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-1">
+                          <span className="font-mono text-sm font-semibold text-slate-500">{t.id}</span>
+                          <span className={`px-2 py-0.5 rounded text-xs font-bold ${
+                            t.status === 'Resolved' ? 'bg-emerald-100 text-emerald-700' : 
+                            t.status === 'Reopened' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'
+                          }`}>
+                            {t.status}
+                          </span>
+                        </div>
+                        <h4 className="font-semibold text-slate-900 text-lg">{t.subject}</h4>
+                        <p className="text-sm text-slate-600 mt-1">{t.description}</p>
                       </div>
                       
-                      {t.status === 'Resolved' && (
-                        <button 
-                          onClick={() => handleReopen(t.id)}
-                          className="w-full bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 font-medium py-1.5 rounded text-xs transition-colors"
-                        >
-                          Issue not fixed? Reopen Case
-                        </button>
-                      )}
+                      <div className="flex flex-col items-end gap-3 min-w-[200px]">
+                        <div className="text-right text-xs text-slate-400">
+                          <div>📍 {t.location}</div>
+                          <div>🕒 Logged: {t.createdAt}</div>
+                        </div>
+                        {t.status === 'Resolved' && (
+                          <button 
+                            onClick={() => handleReopen(t.id)}
+                            className="w-full md:w-auto px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 font-medium rounded text-sm transition-colors"
+                          >
+                            Issue not fixed? Reopen
+                          </button>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
-        </main>
-      )}
-
-      <RaiseTicketModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} ticketData={ticketData} setTicketData={setTicketData} onSubmit={handleCreateTicket} />
-
-      {/* Mandatory Proof Modal for Admins */}
-      {resolvingTicket && (
-        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex justify-center items-center p-4 z-50">
-          <div className="bg-white rounded shadow-xl w-full max-w-md p-8 space-y-5 border border-slate-200">
-            <div>
-              <h3 className="font-semibold text-lg text-slate-900">Proof of Resolution</h3>
-              <p className="text-sm text-slate-500 font-medium mt-1">Attach photo evidence showing completed work for <span className="font-bold text-slate-800">{resolvingTicket.id}</span>.</p>
-            </div>
-
-            <div 
-              onClick={() => setHasProofUpload(!hasProofUpload)} 
-              className={`border border-dashed p-6 text-center rounded cursor-pointer transition-colors ${
-                hasProofUpload ? 'bg-blue-50 border-blue-400 text-blue-700' : 'border-slate-300 text-slate-500 hover:bg-slate-50'
-              }`}
-            >
-              <span className="font-medium text-sm">
-                {hasProofUpload ? '✅ Completion Image Attached' : '📷 Click to Upload Completion Photo (Required)'}
-              </span>
-            </div>
-
-            <div className="flex justify-end gap-3 pt-4">
-              <button onClick={() => setResolvingTicket(null)} className="px-5 py-2 border border-slate-300 hover:bg-slate-50 rounded font-medium text-sm text-slate-600 transition-colors">Cancel</button>
-              <button onClick={handleConfirmResolve} className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded text-sm shadow-sm transition-colors">
-                Confirm & Resolve
-              </button>
-            </div>
+            )}
           </div>
-        </div>
-      )}
-      <Footer />
-    </div>
+        )}
+      </main>
 
-  );
-}
+      {/* 3. MODALS & FOOTER */}
+      <RaiseTicketModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} ticketData={ticketData} setTicketData={setTicketData} onSubmit={handleCreateTicket} />
+      <Footer />
+      
+    </div>
+  );}

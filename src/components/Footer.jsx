@@ -1,37 +1,64 @@
-// src/components/Footer.jsx
+
 import React from 'react';
 
-export default function Footer() {
+const Footer = () => {
   return (
-    <footer className="bg-[#1B2A4A] text-white py-8 mt-12">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div>
-          <img src="/gbu-logo.png" alt="GBU" className="h-12 mb-4 bg-white p-1 rounded" />
-          <p className="text-sm text-gray-300">
-            Gautam Buddha University Grievance Redressal Portal. Upholding excellence in campus welfare.
+    // Flushed edge-to-edge with no borders or shadows
+    <footer className="w-full bg-[#1B2A4A] text-white">
+      
+      {/* Main Footer Content */}
+      <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        {/* Left Column: Brand */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <img src="/gbu-logo.png" alt="GBU Logo" className="h-12 w-auto bg-white rounded-full p-1" />
+          </div>
+          <p className="text-sm text-gray-300 leading-relaxed pr-4">
+            Gautam Buddha University Grievance Redressal Portal. <br />
+            Upholding excellence in campus welfare.
           </p>
         </div>
+
+        {/* Middle Column: Links */}
         <div>
-          <h3 className="font-bold text-[#D4AF37] mb-4">Quick Links</h3>
+          <h4 className="text-[#D4AF37] font-semibold mb-4 text-lg">Quick Links</h4>
           <ul className="space-y-2 text-sm text-gray-300">
-            <li className="hover:text-white cursor-pointer transition">Home</li>
-            <li className="hover:text-white cursor-pointer transition">Academic Guidelines</li>
-            <li className="hover:text-white cursor-pointer transition">Hostel Policies</li>
-            <li className="hover:text-white cursor-pointer transition">Support Helpdesk</li>
+            <li><a href="/" className="hover:text-white transition-colors">Home</a></li>
+            <li><a href="#" className="hover:text-white transition-colors">Academic Guidelines</a></li>
+            <li><a href="#" className="hover:text-white transition-colors">Hostel Policies</a></li>
+            <li><a href="#" className="hover:text-white transition-colors">Support Helpdesk</a></li>
           </ul>
         </div>
+
+        {/* Right Column: Contact */}
         <div>
-          <h3 className="font-bold text-[#D4AF37] mb-4">Contact</h3>
-          <p className="text-sm text-gray-300">
-            📍 Gautam Buddha University, Greater Noida, UP 201312<br /><br />
-            📧 support@gbu.ac.in<br />
-            📞 +91 120 234 4200
-          </p>
+          <h4 className="text-[#D4AF37] font-semibold mb-4 text-lg">Contact</h4>
+          <ul className="space-y-3 text-sm text-gray-300">
+            <li className="flex items-start gap-2">
+              <span>📍</span>
+              <span>Gautam Buddha University, Greater Noida, UP 201312</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <span>✉️</span>
+              <span>support@gbu.ac.in</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <span>📞</span>
+              <span>+91 120 234 4200</span>
+            </li>
+          </ul>
         </div>
+
       </div>
-      <div className="text-center text-xs text-gray-400 mt-8 border-t border-gray-600 pt-4">
+
+      {/* Bottom Copyright Bar - Slightly darker background for flat contrast */}
+      <div className="bg-[#111c33] py-4 text-center text-xs text-gray-400">
         Copyright © Gautam Buddha University. All rights reserved.
       </div>
+      
     </footer>
   );
-}
+};
+
+export default Footer;
