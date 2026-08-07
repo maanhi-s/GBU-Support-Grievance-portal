@@ -14,11 +14,11 @@ export default function AdminConsole({ tickets, onOpenChat }) {
   );
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen w-full bg-gray-50 overflow-hidden m-0 p-0">
       {/* Sidebar */}
       <div className="w-64 bg-[#1B2A4A] text-white flex flex-col">
         <div className="p-4 border-b border-gray-700">
-           <img src="/gbu-logo.png" alt="GBU Logo" className="h-10" />
+           <img src="/assets/gbu-logo.png" alt="GBU Logo" className="h-10" />
         </div>
         <nav className="flex-1 p-4 space-y-2">
           <button className="w-full text-left p-3 bg-[#D4AF37] text-[#1B2A4A] font-bold rounded-lg">Dashboard</button>

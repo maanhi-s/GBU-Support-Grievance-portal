@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-const GBU_SCHOOLS = ["School of ICT (SOICT)", "School of Engineering (SOE)", "School of Management (SOM)"];
-const GBU_HOSTELS = ["Sant Kabir Hostel (Boys)", "Munshi Premchand Hostel (Boys)", "Gargi Hostel (Girls)"];
+const GBU_SCHOOLS = ["School of ICT (SOICT)", "School of Engineering (SOE)", "School of Management (SOM)","School of Biotechnology","Buddhist Studies & Civilization","School of Humanaties & Social Sciences","School of Law,Justice and Governance","School of Vocational Studies & Applied Sciences"];
+const GBU_HOSTELS = [" Sant Ravidas Boys Hostel" ,"Sant Kabir Das Boys Hostel" ,"Birsa Munda Boys Hostel","Ram Sharan Das Boys Hostel","Shri Narayan Guru Boys Hostel","Tulsidas Boys Hostel","Guru Ghasi Das Boys Hostel","Malik Mohammad Jaysi Boys Hostel","Munshi Premchand Boys Hostel","Raheem Boys Hostel","Maharshi Valmiki Boys Hostel","Savitri Bai Phule Girls Hostel","Rani Laxmi Bai Girls Hostel","Ramabai Ambedkar Girls Hostel","Mahamaya Girls Hostel","Mahadevi Verma Girls Hostel","Ismat Chughtai Girls Hostel","Married Research Scholars Hostel"];
 
 export default function AuthScreen({ authData, setAuthData, onSubmit }) {
   const [authView, setAuthView] = useState('student_login');
@@ -25,7 +25,7 @@ export default function AuthScreen({ authData, setAuthData, onSubmit }) {
   return (
     <main 
       className="relative min-h-[90vh] flex items-center justify-center p-4 bg-cover bg-center bg-fixed"
-      style={{ backgroundImage: "url('/gbu-campus.jpg')" }} // Add your campus image in public folder
+      style={{ backgroundImage: "url('/assets/gbu-campus.png')" }} 
     >
       <div className="absolute inset-0 bg-slate-900/80"></div>
 
@@ -42,7 +42,7 @@ export default function AuthScreen({ authData, setAuthData, onSubmit }) {
               onClick={() => { setAuthView('student_login'); setAuthData({...authData, role: 'STUDENT'}); }}
               className={`w-full text-left px-4 py-3 rounded text-sm font-medium transition-colors ${authView === 'student_login' || authView === 'student_signup' || authView === 'otp' ? 'bg-slate-800 text-blue-400 border-l-2 border-blue-500' : 'text-slate-400 hover:bg-slate-800'}`}
             >
-              🎓 Student & Staff Login
+              🎓 Student Login
             </button>
             <button 
               onClick={() => { setAuthView('admin_login'); setAuthData({...authData, role: 'ADMIN'}); }}
@@ -60,7 +60,7 @@ export default function AuthScreen({ authData, setAuthData, onSubmit }) {
             <div className="max-w-md mx-auto space-y-6 animate-fade-in-up">
               <div className="border-b border-slate-100 pb-4 mb-6">
                 <h3 className="text-xl font-semibold text-slate-800">Admin Authorization</h3>
-                <p className="text-sm text-slate-500 mt-1">Restricted access for university authorities.</p>
+                <p className="text-sm text-slate-500 mt-1">access for university authorities.</p>
               </div>
               <form onSubmit={handleInitialSubmit} className="space-y-4">
                 <div>
