@@ -14,7 +14,7 @@ export default function KnowledgeBase({ faqs, activeFaq, setActiveFaq, searchQue
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 flex flex-col items-center text-center space-y-6">
           <img 
-            src="/gbu-logo.png" 
+            src="/src/assets/gbu-logo.png" 
             alt="GBU Logo" 
             className="w-20 h-20 bg-white rounded-full p-1 shadow-lg"
             onError={(e) => { e.target.style.display = 'none'; }}
