@@ -7,7 +7,7 @@ export default function KnowledgeBase({ faqs, activeFaq, setActiveFaq, searchQue
       {/* 🖼️ HERO SECTION WITH CAMPUS BACKGROUND & LOGO */}
       <div 
         className="relative bg-slate-900 text-white border-b border-slate-200 py-16 md:py-20 bg-cover bg-center"
-        style={{ backgroundImage: "url('/assets/gbu-campus.png')" }}
+        style={{ backgroundImage: "url('/src/assets/gbu-campus.png')" }}
       >
         {/* Dark Overlay */}
         <div className="absolute inset-0 bg-slate-900/40"></div>

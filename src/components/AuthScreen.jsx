@@ -25,7 +25,7 @@ export default function AuthScreen({ authData, setAuthData, onSubmit }) {
   return (
     <main 
       className="relative min-h-[90vh] flex items-center justify-center p-4 bg-cover bg-center bg-fixed"
-      style={{ backgroundImage: "url('/assets/gbu-campus.png')" }} 
+      style={{ backgroundImage: "url('/src/assets/gbu-campus.png')" }} 
     >
       <div className="absolute inset-0 bg-slate-900/80"></div>
 
