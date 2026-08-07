@@ -7,14 +7,14 @@ export default function KnowledgeBase({ faqs, activeFaq, setActiveFaq, searchQue
       {/* 🖼️ HERO SECTION WITH CAMPUS BACKGROUND & LOGO */}
       <div 
         className="relative bg-slate-900 text-white border-b border-slate-200 py-16 md:py-20 bg-cover bg-center"
-        style={{ backgroundImage: "url('/src/assets/gbu-campus.png')" }}
+        style={{ backgroundImage: "url('/gbu-campus.png')" }}
       >
         {/* Dark Overlay */}
         <div className="absolute inset-0 bg-slate-900/40"></div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 flex flex-col items-center text-center space-y-6">
           <img 
-            src="/src/assets/gbu-logo.png" 
+            src="/gbu-logo.png" 
             alt="GBU Logo" 
             className="w-20 h-20 bg-white rounded-full p-1 shadow-lg"
             onError={(e) => { e.target.style.display = 'none'; }}
