@@ -1,61 +1,40 @@
 import React from 'react';
 
-export default function Navbar({ currentView, setCurrentView, user, onLogout }) {
+const TopHeader = ({ currentUser }) => {
+  // Dynamically set the name based on the logged-in user.
+  // If no user is logged in yet, it defaults to 'Guest'.
+  const displayName = currentUser?.name || currentUser?.role || 'Guest';
+
   return (
-    <header className="bg-white text-slate-900 border-b border-slate-200 sticky top-0 z-40 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-        
-        {/* BRANDING */}
-        <div 
-          onClick={() => setCurrentView('knowledge_base')}
-          className="flex items-center gap-3 cursor-pointer group"
-        >
-          <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center shadow-sm overflow-hidden transition-colors">
-            {/* Fallback text if no logo */}
-            <span className="text-white font-bold text-xs tracking-wider">GBU</span>
-          </div>
-          <h1 className="text-lg font-semibold tracking-tight text-slate-800 hover:text-blue-600 transition-colors">
-            Gautam Buddha University
-          </h1>
+    <header className="bg-white border-b border-gray-200 h-14 flex items-center justify-between px-4 shadow-sm w-full relative z-10">
+      
+      {/* LEFT SIDE: GBU Logo & Brand */}
+      <div className="flex items-center gap-3">
+        {/* Make sure 'gbu-logo.png' is saved in your 'public' folder */}
+        <img 
+          src="/gbu-logo.png" 
+          alt="Gautam Buddha University Logo" 
+          className="h-10 w-auto object-contain"
+        />
+        <span className="font-bold text-blue-900 text-lg hidden sm:block tracking-wide">
+          Grievance Portal
+        </span>
+      </div>
+
+      {/* RIGHT SIDE: Dynamic User Greeting & Profile Avatar */}
+      <div className="flex items-center gap-4">
+        <div className="text-sm text-gray-700 font-medium">
+          Hi, <span className="text-blue-700 font-bold">{displayName}</span>
         </div>
-
-        {/* NAVIGATION CTAs */}
-        <div className="flex items-center gap-4 text-sm font-medium">
-          <button 
-            onClick={() => setCurrentView('knowledge_base')}
-            className={`transition-colors ${currentView === 'knowledge_base' ? 'text-blue-600' : 'text-slate-600 hover:text-slate-900'}`}
-          >
-            Support Home
-          </button>
-
-          {user ? (
-            <div className="flex items-center gap-3 border-l border-slate-200 pl-4">
-              <span className="text-slate-500 text-xs hidden md:block">Hi, {user.name.split(' ')[0]}</span>
-              <button 
-                onClick={() => setCurrentView('dashboard')}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm transition-colors shadow-sm"
-              >
-                {user.role === 'ADMIN' ? 'Staff Console' : 'My Tickets'}
-              </button>
-              <button 
-                onClick={onLogout}
-                className="text-slate-500 hover:text-red-600 px-2 transition-colors"
-              >
-                Logout
-              </button>
-            </div>
-          ) : (
-            <div className="border-l border-slate-200 pl-4">
-              <button 
-                onClick={() => setCurrentView('auth')}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded shadow-sm transition-colors"
-              >
-                Sign In / Register
-              </button>
-            </div>
-          )}
+        
+        {/* Clean Profile Circle */}
+        <div className="h-9 w-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-900 font-bold border border-blue-200">
+          {displayName.charAt(0).toUpperCase()}
         </div>
       </div>
+
     </header>
   );
-}
+};
+
+export default TopHeader;
