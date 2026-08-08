@@ -1,173 +1,213 @@
 import React, { useState } from 'react';
 
-export default function UserManagement() {
-  const [activeTab, setActiveTab] = useState('active');
-  const [users, setUsers] = useState([
-    { id: 1, name: 'Dr. R. K. Sharma', email: 'rksharma@gbu.ac.in', role: 'Head Warden', status: 'Active' },
-    { id: 2, name: 'Prof. Anjali Singh', email: 'asingh@gbu.ac.in', role: 'IT Admin', status: 'Active' }
-  ]);
+export default function UserManagement({ usersList, setUsersList }) {
+  const [userSubTab, setUserSubTab] = useState('active');
+  const [isAddMemberOpen, setIsAddMemberOpen] = useState(false);
+  const [newMember, setNewMember] = useState({
+    name: '',
+    email: '',
+    role: 'Hostel Warden',
+    password: ''
+  });
 
-  const [showAddModal, setShowAddModal] = useState(false);
-  const [newName, setNewName] = useState('');
-  const [newEmail, setNewEmail] = useState('');
-  const [newRole, setNewRole] = useState('Warden');
-  const [newPassword, setNewPassword] = useState('');
-
-  const handleAddUser = (e) => {
+  const handleAddMemberSubmit = (e) => {
     e.preventDefault();
-    if (!newName || !newEmail || !newPassword) return;
-    const userObj = {
+    if (!newMember.name || !newMember.email) return;
+
+    const createdUser = {
       id: Date.now(),
-      name: newName,
-      email: newEmail,
-      role: newRole,
-      status: 'Active'
+      name: newMember.name,
+      email: newMember.email,
+      role: newMember.role,
+      status: 'active'
     };
-    setUsers([...users, userObj]);
-    setNewName('');
-    setNewEmail('');
-    setNewPassword('');
-    setShowAddModal(false);
+
+    setUsersList([...usersList, createdUser]);
+    setNewMember({ name: '', email: '', role: 'Hostel Warden', password: '' });
+    setIsAddMemberOpen(false);
   };
 
-  const handleDelete = (id) => {
-    setUsers(users.filter(u => u.id !== id));
-  };
+  const filteredUsers = usersList.filter((u) => u.status === userSubTab);
 
   return (
-    <div className="p-6 bg-slate-50 min-h-full">
-      <div className="flex justify-between items-center mb-6">
+    <div className="w-full space-y-0">
+      {/* Top Header Row */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 p-3 sm:px-0">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">User Management Console</h1>
-          <p className="text-sm text-slate-500">Manage system administrators, wardens, and staff access roles.</p>
+          <h1 className="text-base font-semibold text-slate-900">User Management Console</h1>
+          <p className="text-xs text-slate-500 mt-0.5">Manage wardens, superintendents, and staff roles.</p>
         </div>
-        <button 
-          onClick={() => setShowAddModal(true)}
-          className="bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded-lg font-medium shadow transition-all hover:scale-105"
+
+        <button
+          onClick={() => setIsAddMemberOpen(true)}
+          className="bg-[#387ed1] hover:bg-[#2c65a8] text-white px-3 py-1.5 rounded text-xs font-medium transition-colors flex items-center gap-1.5 self-start sm:self-auto"
         >
-          + Add New Member
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Add New Member
         </button>
       </div>
 
-      {/* Tabs */}
-      <div className="flex border-b border-slate-200 mb-6 space-x-6">
-        <button 
-          onClick={() => setActiveTab('active')}
-          className={`pb-3 font-semibold text-sm border-b-2 transition-colors ${activeTab === 'active' ? 'border-purple-700 text-purple-700' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
+      {/* Navigation Sub-Tabs */}
+      <div className="flex border-b border-slate-200 text-xs font-medium text-slate-500 px-3 sm:px-0 gap-6 pt-2">
+        <button
+          onClick={() => setUserSubTab('active')}
+          className={`pb-2 transition-colors border-b-2 ${
+            userSubTab === 'active'
+              ? 'border-[#387ed1] text-[#387ed1] font-semibold'
+              : 'border-transparent hover:text-slate-900'
+          }`}
         >
-          Active Users ({users.length})
+          Active ({usersList.filter((u) => u.status === 'active').length})
         </button>
-        <button 
-          onClick={() => setActiveTab('guest')}
-          className={`pb-3 font-semibold text-sm border-b-2 transition-colors ${activeTab === 'guest' ? 'border-purple-700 text-purple-700' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
+        <button
+          onClick={() => setUserSubTab('guest')}
+          className={`pb-2 transition-colors border-b-2 ${
+            userSubTab === 'guest'
+              ? 'border-[#387ed1] text-[#387ed1] font-semibold'
+              : 'border-transparent hover:text-slate-900'
+          }`}
         >
-          Guest Users (0)
+          Guests ({usersList.filter((u) => u.status === 'guest').length})
         </button>
-        <button 
-          onClick={() => setActiveTab('deleted')}
-          className={`pb-3 font-semibold text-sm border-b-2 transition-colors ${activeTab === 'deleted' ? 'border-purple-700 text-purple-700' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
+        <button
+          onClick={() => setUserSubTab('deleted')}
+          className={`pb-2 transition-colors border-b-2 ${
+            userSubTab === 'deleted'
+              ? 'border-[#387ed1] text-[#387ed1] font-semibold'
+              : 'border-transparent hover:text-slate-900'
+          }`}
         >
-          Deleted Users
+          Deleted ({usersList.filter((u) => u.status === 'deleted').length})
         </button>
       </div>
 
-      {/* Add User Panel/Modal */}
-      {showAddModal && (
-        <div className="bg-white p-6 rounded-xl shadow-lg border border-purple-100 mb-6 transition-all">
-          <h3 className="text-lg font-bold text-slate-800 mb-4">Add New Admin / Staff Member</h3>
-          <form onSubmit={handleAddUser} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1">Display Name</label>
-              <input 
-                type="text" 
-                placeholder="Dr. A. Kumar" 
-                value={newName} 
-                onChange={(e) => setNewName(e.target.value)} 
-                className="w-full p-2.5 border rounded-lg text-sm focus:ring-2 focus:ring-purple-500 outline-none" 
-                required 
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1">Email ID / Username</label>
-              <input 
-                type="email" 
-                placeholder="kumar@gbu.ac.in" 
-                value={newEmail} 
-                onChange={(e) => setNewEmail(e.target.value)} 
-                className="w-full p-2.5 border rounded-lg text-sm focus:ring-2 focus:ring-purple-500 outline-none" 
-                required 
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1">Assign Role</label>
-              <select 
-                value={newRole} 
-                onChange={(e) => setNewRole(e.target.value)} 
-                className="w-full p-2.5 border rounded-lg text-sm focus:ring-2 focus:ring-purple-500 outline-none"
-              >
-                <option value="Warden">Hostel Warden</option>
-                <option value="Head Warden">Head Warden</option>
-                <option value="IT Admin">IT Support Admin</option>
-                <option value="Estate Officer">Estate Officer</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1">Temporary Password</label>
-              <input 
-                type="password" 
-                placeholder="••••••••" 
-                value={newPassword} 
-                onChange={(e) => setNewPassword(e.target.value)} 
-                className="w-full p-2.5 border rounded-lg text-sm focus:ring-2 focus:ring-purple-500 outline-none" 
-                required 
-              />
-            </div>
-            <div className="md:col-span-2 flex justify-end space-x-3 mt-2">
-              <button 
-                type="button" 
-                onClick={() => setShowAddModal(false)}
-                className="px-4 py-2 border rounded-lg text-sm text-slate-600 hover:bg-slate-100"
-              >
-                Cancel
-              </button>
-              <button 
-                type="submit" 
-                className="px-5 py-2 bg-purple-700 hover:bg-purple-800 text-white rounded-lg text-sm font-medium shadow"
-              >
-                Save Member
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-
-      {/* Users Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-        <table className="w-full text-left border-collapse">
+      {/* Flush Users Table */}
+      <div className="overflow-x-auto w-full">
+        <table className="w-full text-left text-xs border-collapse min-w-[500px]">
           <thead>
-            <tr className="bg-slate-100 text-slate-600 text-xs uppercase font-semibold">
-              <th className="p-4">Display Name</th>
-              <th className="p-4">Email ID</th>
-              <th className="p-4">Role</th>
-              <th className="p-4">Status</th>
-              <th className="p-4 text-right">Actions</th>
+            <tr className="border-b border-slate-200 text-slate-400 font-medium text-[11px] bg-slate-50/50">
+              <th className="py-2.5 px-3">Display Name</th>
+              <th className="py-2.5 px-3">Email ID</th>
+              <th className="py-2.5 px-3">Assigned Role</th>
+              <th className="py-2.5 px-3 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 text-sm">
-            {users.map((u) => (
-              <tr key={u.id} className="hover:bg-slate-50 transition-colors">
-                <td className="p-4 font-medium text-slate-800">{u.name}</td>
-                <td className="p-4 text-slate-600">{u.email}</td>
-                <td className="p-4"><span className="bg-purple-50 text-purple-700 px-2.5 py-1 rounded-md text-xs font-semibold">{u.role}</span></td>
-                <td className="p-4"><span className="text-emerald-600 font-medium flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500"></span>{u.status}</span></td>
-                <td className="p-4 text-right">
-                  <button onClick={() => handleDelete(u.id)} className="text-red-500 hover:text-red-700 font-medium text-xs">Delete</button>
+          <tbody className="divide-y divide-slate-100 text-slate-700">
+            {filteredUsers.length > 0 ? (
+              filteredUsers.map((u) => (
+                <tr key={u.id} className="hover:bg-slate-50/60 transition-colors">
+                  <td className="py-3 px-3 font-medium text-slate-900">{u.name}</td>
+                  <td className="py-3 px-3 text-slate-500">{u.email}</td>
+                  <td className="py-3 px-3">
+                    <span className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[10px] font-medium border border-slate-200">
+                      {u.role}
+                    </span>
+                  </td>
+                  <td className="py-3 px-3 text-right">
+                    <button
+                      onClick={() => setUsersList(usersList.filter((usr) => usr.id !== u.id))}
+                      className="text-rose-600 hover:text-rose-800 text-xs font-medium"
+                    >
+                      Remove
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="py-8 text-center text-slate-400">
+                  No {userSubTab} staff records found.
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
+
+      {/* Add Member Modal Drawer */}
+      {isAddMemberOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
+          <div className="bg-white border border-slate-200 rounded-lg shadow-lg w-full max-w-md overflow-hidden">
+            <div className="px-4 py-3 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+              <h3 className="font-semibold text-slate-900 text-xs">Add New Staff / Warden Member</h3>
+              <button onClick={() => setIsAddMemberOpen(false)} className="text-slate-400 hover:text-slate-600">
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleAddMemberSubmit} className="p-4 space-y-3 text-xs">
+              <div>
+                <label className="block text-slate-600 font-medium mb-1">Display Name</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Dr. Rajesh Sharma"
+                  value={newMember.name}
+                  onChange={(e) => setNewMember({ ...newMember, name: e.target.value })}
+                  className="w-full px-3 py-1.5 border border-slate-200 rounded focus:outline-none focus:border-[#387ed1]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-600 font-medium mb-1">Email ID</label>
+                <input
+                  type="email"
+                  required
+                  placeholder="e.g. rsharma@gbu.ac.in"
+                  value={newMember.email}
+                  onChange={(e) => setNewMember({ ...newMember, email: e.target.value })}
+                  className="w-full px-3 py-1.5 border border-slate-200 rounded focus:outline-none focus:border-[#387ed1]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-600 font-medium mb-1">Assigned Role</label>
+                <select
+                  value={newMember.role}
+                  onChange={(e) => setNewMember({ ...newMember, role: e.target.value })}
+                  className="w-full px-3 py-1.5 border border-slate-200 rounded focus:outline-none focus:border-[#387ed1] bg-white"
+                >
+                  <option value="Hostel Warden">Hostel Warden</option>
+                  <option value="Senior Warden">Senior Warden</option>
+                  <option value="IT Support Lead">IT Support Lead</option>
+                  <option value="Estate Enquiry Office">Estate Enquiry Office</option>
+                  <option value="Superintendent Office">Superintendent Office</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-slate-600 font-medium mb-1">Temporary Password</label>
+                <input
+                  type="password"
+                  required
+                  placeholder="••••••••"
+                  value={newMember.password}
+                  onChange={(e) => setNewMember({ ...newMember, password: e.target.value })}
+                  className="w-full px-3 py-1.5 border border-slate-200 rounded focus:outline-none focus:border-[#387ed1]"
+                />
+              </div>
+
+              <div className="pt-2 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsAddMemberOpen(false)}
+                  className="px-3 py-1.5 border border-slate-200 rounded text-slate-600 hover:bg-slate-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-3 py-1.5 bg-[#387ed1] hover:bg-[#2b6cb0] text-white rounded transition-colors font-medium"
+                >
+                  Create Member
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
